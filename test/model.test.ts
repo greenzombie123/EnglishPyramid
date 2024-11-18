@@ -6,6 +6,7 @@ import {
   getGuesses,
   Guesses,
   incrementCurrentRow,
+  isCatCard,
   isGameOver,
   makeCard,
   NoCard,
@@ -139,3 +140,29 @@ describe("resetGuesses", () => {
     expect(expected).toEqual(results);
   });
 });
+
+describe("isCatCard", ()=>{
+  test("Return true if cat card", ()=>{
+    const expected = true
+    const testCard:PictureCard = {type:"Picture", backSide:"cat", frontSide:"park"}
+    const results = isCatCard(testCard)
+
+    expect(results).toEqual(expected)
+  })
+
+  test("Return false if pass non-cat picture card", ()=>{
+    const expected = false
+    const testCard:PictureCard = {type:"Picture", backSide:"alligator", frontSide:"park"}
+    const results = isCatCard(testCard)
+
+    expect(results).toEqual(expected)
+  })
+
+  test("Return false if pass no card", ()=>{
+    const expected = false
+    const testCard:NoCard = {type:"No"}
+    const results = isCatCard(testCard)
+
+    expect(results).toEqual(expected)
+  })
+})

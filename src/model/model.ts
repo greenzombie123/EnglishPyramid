@@ -88,7 +88,14 @@ const pyramid: Pyramid = {
 
 let currentRow: RowName = "firstRow";
 
-const pickCard = (index: number): void => {};
+const pickCard = (index: number): void => {
+    const guesses:Guesses = getGuesses()
+    if(isGameOver(guesses))return
+    const currentRow:RowName = getCurrentRow()
+    const pyramid:Pyramid = getPyramid()
+    const card:Card = getCard(index, currentRow, pyramid)
+
+};
 
 const isGameOver = (guesses: Guesses): boolean => {
   for (const guess of Object.entries(guesses)) {
@@ -107,7 +114,7 @@ const getCard = (index: number, row: RowName, pyramid: Pyramid): Card => {
   return pyramid[row][index] || { type: "No" };
 };
 
-const checkWinner = () => {};
+const isCatCard = (card:Card):boolean => card.type !== "No" && card.backSide === "cat"
 
 const updateGuesses = (GuessOrder: GuessOrder) => (guesses[GuessOrder] = true);
 
@@ -130,7 +137,7 @@ const resetGuesses = () => {
     guesses.fifthGuess = false
 };
 
-const reserCurrentRow = () => {};
+const resetCurrentRow = () => currentRow = "firstRow"
 
 export {
   makeCard,
@@ -139,9 +146,9 @@ export {
   getCurrentRow,
   getGuesses,
   getPyramid,
-  checkWinner,
   updateGuesses,
   incrementCurrentRow,
-  reserCurrentRow,
+  resetCurrentRow,
   resetGuesses,
+  isCatCard
 };
