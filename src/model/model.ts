@@ -1,10 +1,17 @@
 export type Animal = "cat" | "dog" | "tiger" | "alligator" | "elephant";
 export type Place = "zoo" | "park" | "school" | "library" | "supermarket";
 
-export type Card = {
+export type PictureCard = {
+  type: "Picture";
   frontSide: Place;
   backSide: Animal;
 };
+
+export type NoCard = {
+  type: "No";
+};
+
+export type Card = NoCard | PictureCard;
 
 export type Row = Card[];
 
@@ -15,6 +22,10 @@ export type Pyramid = {
   fourthRow: [Card, Card, Card, Card];
   fifthRow: [Card, Card, Card, Card, Card];
 };
+
+// type TestablePyramid = {
+
+// }
 
 export type Guesses = {
   firstGuess: boolean;
@@ -31,9 +42,15 @@ export type RowName =
   | "fourthRow"
   | "fifthRow";
 
-let currentRow: string;
+export type GuessOrder =
+  | "firstGuess"
+  | "secondGuess"
+  | "thirdGuess"
+  | "fourthGuess"
+  | "fifthGuess";
 
-const makeCard = (place: Place, animal: Animal): Card => ({
+const makeCard = (place: Place, animal: Animal): PictureCard => ({
+  type: "Picture",
   frontSide: place,
   backSide: animal,
 });
@@ -69,16 +86,50 @@ const pyramid: Pyramid = {
   ],
 };
 
+let currentRow: RowName = "firstRow";
+
 const pickCard = (index: number): void => {};
-const isGameOver = (): boolean => {};
-const getCurrentRow = (): RowName => {};
-const getGuesses = (): Guesses => {};
-const getPyramid = (): Pyramid => {};
-const getCard = (index: number, row: RowName, pyramid: Pyramid): Card => {};
+
+const isGameOver = (guesses: Guesses): boolean => {
+  for (const guess of Object.entries(guesses)) {
+    if (guess[1] === false) return false;
+  }
+  return true;
+};
+
+const getCurrentRow = (): RowName => currentRow;
+
+const getGuesses = (): Guesses => guesses;
+
+const getPyramid = (): Pyramid => pyramid;
+
+const getCard = (index: number, row: RowName, pyramid: Pyramid): Card => {
+  return pyramid[row][index] || { type: "No" };
+};
+
 const checkWinner = () => {};
-const updateGuesses = (rowName: RowName) => {};
-const incrementCurrentRow = () => {};
-const resetGuesses = () => {};
+
+const updateGuesses = (GuessOrder: GuessOrder) => (guesses[GuessOrder] = true);
+
+const incrementCurrentRow = () => {
+  currentRow =
+    currentRow === "firstRow"
+      ? "secondRow"
+      : currentRow === "secondRow"
+        ? "thirdRow"
+        : currentRow === "thirdRow"
+          ? "fourthRow"
+          : "fifthRow";
+};
+
+const resetGuesses = () => {
+    guesses.firstGuess = false
+    guesses.secondGuess = false
+    guesses.thirdGuess = false
+    guesses.fourthGuess = false
+    guesses.fifthGuess = false
+};
+
 const reserCurrentRow = () => {};
 
 export {
