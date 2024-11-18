@@ -29,11 +29,11 @@ test("Return a card", () => {
 
 test("Return a guesses object", () => {
   const expected: Guesses = {
-    firstGuess: false,
-    secondGuess: false,
-    thirdGuess: false,
-    fourthGuess: false,
-    fifthGuess: false,
+    firstRow: false,
+    secondRow: false,
+    thirdRow: false,
+    fourthRow: false,
+    fifthRow: false,
   };
 
   const results = getGuesses();
@@ -44,11 +44,11 @@ test("Return a guesses object", () => {
 describe("isGameOver", () => {
   test("Return false if not all row props are true", () => {
     const mock: Guesses = {
-      firstGuess: true,
-      secondGuess: false,
-      thirdGuess: true,
-      fourthGuess: true,
-      fifthGuess: true,
+      firstRow: true,
+      secondRow: false,
+      thirdRow: true,
+      fourthRow: true,
+      fifthRow: true,
     };
 
     const results = isGameOver(mock);
@@ -124,14 +124,14 @@ describe("incrementCurrentRow", () => {
 describe("resetGuesses", () => {
   test("Change all props to false'", () => {
     const expected: Guesses = {
-      firstGuess: false,
-      secondGuess: false,
-      thirdGuess: false,
-      fourthGuess: false,
-      fifthGuess: false,
+      firstRow: false,
+      secondRow: false,
+      thirdRow: false,
+      fourthRow: false,
+      fifthRow: false,
     };
 
-    updateGuesses("firstGuess")
+    updateGuesses("firstRow")
 
     resetGuesses()
 

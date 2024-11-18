@@ -23,16 +23,12 @@ export type Pyramid = {
   fifthRow: [Card, Card, Card, Card, Card];
 };
 
-// type TestablePyramid = {
-
-// }
-
 export type Guesses = {
-  firstGuess: boolean;
-  secondGuess: boolean;
-  thirdGuess: boolean;
-  fourthGuess: boolean;
-  fifthGuess: boolean;
+  firstRow: boolean;
+  secondRow: boolean;
+  thirdRow: boolean;
+  fourthRow: boolean;
+  fifthRow: boolean;
 };
 
 export type RowName =
@@ -42,13 +38,6 @@ export type RowName =
   | "fourthRow"
   | "fifthRow";
 
-export type GuessOrder =
-  | "firstGuess"
-  | "secondGuess"
-  | "thirdGuess"
-  | "fourthGuess"
-  | "fifthGuess";
-
 const makeCard = (place: Place, animal: Animal): PictureCard => ({
   type: "Picture",
   frontSide: place,
@@ -56,11 +45,11 @@ const makeCard = (place: Place, animal: Animal): PictureCard => ({
 });
 
 const guesses: Guesses = {
-  firstGuess: false,
-  secondGuess: false,
-  thirdGuess: false,
-  fourthGuess: false,
-  fifthGuess: false,
+  firstRow: false,
+  secondRow: false,
+  thirdRow: false,
+  fourthRow: false,
+  fifthRow: false
 };
 
 const pyramid: Pyramid = {
@@ -90,11 +79,11 @@ let currentRow: RowName = "firstRow";
 
 const pickCard = (index: number): void => {
     const guesses:Guesses = getGuesses()
-    if(isGameOver(guesses))return
+    if(isGameOver(guesses))return 
     const currentRow:RowName = getCurrentRow()
     const pyramid:Pyramid = getPyramid()
     const card:Card = getCard(index, currentRow, pyramid)
-
+    checkCard(card)
 };
 
 const isGameOver = (guesses: Guesses): boolean => {
@@ -116,7 +105,19 @@ const getCard = (index: number, row: RowName, pyramid: Pyramid): Card => {
 
 const isCatCard = (card:Card):boolean => card.type !== "No" && card.backSide === "cat"
 
-const updateGuesses = (GuessOrder: GuessOrder) => (guesses[GuessOrder] = true);
+const checkCard = (card:Card)=>{
+  if(isCatCard(card)){
+    const currentRow = getCurrentRow()
+    updateGuesses(currentRow)
+    incrementCurrentRow()
+  }
+  else{
+    resetGuesses()
+    resetCurrentRow()
+  }
+}
+
+const updateGuesses = (row: RowName) => (guesses[row] = true);
 
 const incrementCurrentRow = () => {
   currentRow =
@@ -130,11 +131,11 @@ const incrementCurrentRow = () => {
 };
 
 const resetGuesses = () => {
-    guesses.firstGuess = false
-    guesses.secondGuess = false
-    guesses.thirdGuess = false
-    guesses.fourthGuess = false
-    guesses.fifthGuess = false
+    guesses.firstRow = false
+    guesses.secondRow = false
+    guesses.thirdRow = false
+    guesses.fifthRow = false
+    guesses.fifthRow = false
 };
 
 const resetCurrentRow = () => currentRow = "firstRow"
