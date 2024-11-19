@@ -14,7 +14,7 @@ import {
   Pyramid,
   resetGuesses,
   updateGuesses,
-} from "../src/model/model";
+} from "../src/model";
 
 test("Return a card", () => {
   const expectedCard: Card = {
