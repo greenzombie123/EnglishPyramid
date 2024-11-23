@@ -16,11 +16,11 @@ export type Card = NoCard | PictureCard;
 export type Row = Card[];
 
 export type Pyramid = {
-  firstRow: [Card];
-  secondRow: [Card, Card];
-  thirdRow: [Card, Card, Card];
-  fourthRow: [Card, Card, Card, Card];
-  fifthRow: [Card, Card, Card, Card, Card];
+  firstRow: [PictureCard];
+  secondRow: [PictureCard, PictureCard];
+  thirdRow: [PictureCard, PictureCard, PictureCard];
+  fourthRow: [PictureCard, PictureCard, PictureCard, PictureCard];
+  fifthRow: [PictureCard, PictureCard, PictureCard, PictureCard, PictureCard];
 };
 
 export type Guesses = {
@@ -151,5 +151,6 @@ export {
   incrementCurrentRow,
   resetCurrentRow,
   resetGuesses,
-  isCatCard
+  isCatCard,
+  pickCard
 };

@@ -32,7 +32,10 @@ body{
                     width: 100%;
                     transform-style: preserve-3d; /* Keeps both sides visible in 3D */
                     transition: transform 0.6s; /* Smooth flip effect */
-                    /* transform: rotateY(80deg); Flips the card */
+
+                    &.flip{
+                       transform: rotateY(80deg); /*Flips the card*/ 
+                    }
 
                     .front,.back{
                         position:absolute;
