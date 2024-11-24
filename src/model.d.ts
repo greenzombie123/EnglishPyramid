@@ -38,4 +38,5 @@ declare const incrementCurrentRow: () => void;
 declare const resetGuesses: () => void;
 declare const resetCurrentRow: () => string;
 declare const resetGame: () => void;
-export { makeCard, isGameOver, getCard, getCurrentRow, getGuesses, getPyramid, updateGuesses, incrementCurrentRow, resetCurrentRow, resetGuesses, isCatCard, pickCard, resetGame, };
+declare const resetPyramid: () => void;
+export { makeCard, isGameOver, getCard, getCurrentRow, getGuesses, getPyramid, updateGuesses, incrementCurrentRow, resetCurrentRow, resetGuesses, isCatCard, pickCard, resetGame, resetPyramid };

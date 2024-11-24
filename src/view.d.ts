@@ -17,5 +17,6 @@ declare const createPyramidView: (pyramid: Pyramid) => {
     getPyramidDiv: () => {
         [index: string]: HTMLDivElement[];
     };
+    resetPyramidView: (newPyramid: Pyramid) => void;
 };
 export { createPyramidView };

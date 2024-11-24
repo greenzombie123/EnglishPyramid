@@ -118,11 +118,10 @@ const createCardRow = <T extends number>(numOfCards: T): CardRow<T> => {
     counter++;
   }
 
-  console.log(cards);
   return cards as CardRow<T>;
 };
 
-const pyramid: Pyramid = {
+let pyramid: Pyramid = {
   firstRow: createCardRow(1),
   secondRow: createCardRow(2),
   thirdRow: createCardRow(3),
@@ -205,7 +204,18 @@ const resetCurrentRow = () => (currentRow = "firstRow");
 const resetGame = () => {
   resetGuesses();
   resetCurrentRow();
+  resetPyramid()
 };
+
+const resetPyramid = ()=> {
+  pyramid = {
+    firstRow: createCardRow(1),
+    secondRow: createCardRow(2),
+    thirdRow: createCardRow(3),
+    fourthRow: createCardRow(4),
+    fifthRow: createCardRow(5),
+  };
+}
 
 export {
   makeCard,
@@ -221,4 +231,5 @@ export {
   isCatCard,
   pickCard,
   resetGame,
+  resetPyramid
 };

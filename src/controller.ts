@@ -1,6 +1,6 @@
-import { CardView, createPyramidView } from "./view";
+import { createPyramidView } from "./view";
 import * as model from "./model";
-import { eventEmitter } from "eventlistenerhelper";
+import { eventEmitter, eventListenerManager } from "eventlistenerhelper";
 import createResetButton from "./resetButtonView";
 
 const controller = () => {
@@ -60,7 +60,9 @@ const controller = () => {
       const cardDiv = cardView.getCardDiv();
       const { cardRow, cardIndex } = cardView.getCardData();
 
-      cardDiv.addEventListener("click", handleCardClick(cardRow, cardIndex));
+      eventListenerManager.setListener(handleCardClick(cardRow, cardIndex), cardDiv, "click")
+
+      // cardDiv.addEventListener("click", handleCardClick(cardRow, cardIndex));
     });
 
     // Attach handleResetGame to reset button
