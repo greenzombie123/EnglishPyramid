@@ -54,27 +54,80 @@ const guesses: Guesses = {
   fifthRow: false,
 };
 
+type CardRow<T extends number> = T extends 1
+  ? [PictureCard]
+  : T extends 2
+    ? [PictureCard, PictureCard]
+    : T extends 3
+      ? [PictureCard, PictureCard, PictureCard]
+      : T extends 4
+        ? [PictureCard, PictureCard, PictureCard, PictureCard]
+        : T extends 5
+          ? [PictureCard, PictureCard, PictureCard, PictureCard, PictureCard]
+          : never;
+
+const createCardRow = <T extends number>(numOfCards: T): CardRow<T> => {
+  let animals: Animal[] = ["alligator", "dog", "elephant", "tiger"];
+  let places: Place[] = ["library", "park", "school", "supermarket", "zoo"];
+  const cards = [];
+
+  let counter = 0;
+  let hasCat = false;
+
+  while (numOfCards > counter) {
+    let ranNum = Math.floor(Math.random() * 2) + 1;
+
+    if (hasCat) {
+      ranNum = 2;
+    }
+
+    if (ranNum === 2) {
+      if (numOfCards - counter === 1 && !hasCat) {
+        const placeRanNum = Math.floor(Math.random() * places.length);
+        cards.push({
+          backSide: "cat",
+          frontSide: places[placeRanNum],
+          type: "Picture",
+        });
+      } else {
+        const animalRanNum = Math.floor(Math.random() * animals.length);
+        const placeRanNum = Math.floor(Math.random() * places.length);
+
+        const card: PictureCard = {
+          backSide: animals[animalRanNum],
+          frontSide: places[placeRanNum],
+          type: "Picture",
+        };
+
+        cards.push(card);
+
+        animals = animals.filter((animal) => animal !== animals[animalRanNum]);
+        places = places.filter((place) => place !== places[placeRanNum]);
+      }
+    } else {
+      hasCat = true;
+      const placeRanNum = Math.floor(Math.random() * places.length);
+      cards.push({
+        backSide: "cat",
+        frontSide: places[placeRanNum],
+        type: "Picture",
+      });
+      places = places.filter((place) => place !== places[placeRanNum]);
+    }
+
+    counter++;
+  }
+
+  console.log(cards);
+  return cards as CardRow<T>;
+};
+
 const pyramid: Pyramid = {
-  firstRow: [makeCard("library", "cat")],
-  secondRow: [makeCard("school", "elephant"), makeCard("supermarket", "cat")],
-  thirdRow: [
-    makeCard("zoo", "cat"),
-    makeCard("park", "dog"),
-    makeCard("school", "alligator"),
-  ],
-  fourthRow: [
-    makeCard("library", "alligator"),
-    makeCard("school", "dog"),
-    makeCard("park", "tiger"),
-    makeCard("supermarket", "cat"),
-  ],
-  fifthRow: [
-    makeCard("supermarket", "dog"),
-    makeCard("park", "cat"),
-    makeCard("library", "tiger"),
-    makeCard("school", "alligator"),
-    makeCard("zoo", "elephant"),
-  ],
+  firstRow: createCardRow(1),
+  secondRow: createCardRow(2),
+  thirdRow: createCardRow(3),
+  fourthRow: createCardRow(4),
+  fifthRow: createCardRow(5),
 };
 
 let currentRow: RowName = "firstRow";
