@@ -1,3 +1,5 @@
+import { eventEmitter } from "eventlistenerhelper";
+
 export type Animal = "cat" | "dog" | "tiger" | "alligator" | "elephant";
 export type Place = "zoo" | "park" | "school" | "library" | "supermarket";
 
@@ -49,7 +51,7 @@ const guesses: Guesses = {
   secondRow: false,
   thirdRow: false,
   fourthRow: false,
-  fifthRow: false
+  fifthRow: false,
 };
 
 const pyramid: Pyramid = {
@@ -78,12 +80,12 @@ const pyramid: Pyramid = {
 let currentRow: RowName = "firstRow";
 
 const pickCard = (index: number): void => {
-    const guesses:Guesses = getGuesses()
-    if(isGameOver(guesses))return 
-    const currentRow:RowName = getCurrentRow()
-    const pyramid:Pyramid = getPyramid()
-    const card:Card = getCard(index, currentRow, pyramid)
-    checkCard(card)
+  const guesses: Guesses = getGuesses();
+  if (isGameOver(guesses)) return;
+  const currentRow: RowName = getCurrentRow();
+  const pyramid: Pyramid = getPyramid();
+  const card: Card = getCard(index, currentRow, pyramid);
+  checkCard(card);
 };
 
 const isGameOver = (guesses: Guesses): boolean => {
@@ -103,19 +105,26 @@ const getCard = (index: number, row: RowName, pyramid: Pyramid): Card => {
   return pyramid[row][index] || { type: "No" };
 };
 
-const isCatCard = (card:Card):boolean => card.type !== "No" && card.backSide === "cat"
+const isCatCard = (card: Card): boolean =>
+  card.type !== "No" && card.backSide === "cat";
 
-const checkCard = (card:Card)=>{
-  if(isCatCard(card)){
-    const currentRow = getCurrentRow()
-    updateGuesses(currentRow)
-    incrementCurrentRow()
+const checkCard = (card: Card) => {
+  eventEmitter.emitEvent("flipCard", card);
+  if (isCatCard(card)) {
+    if (getCurrentRow() === "fifthRow") {
+      eventEmitter.emitEvent("gameOver", getCurrentRow);
+      return;
+    } else {
+      const currentRow = getCurrentRow();
+      updateGuesses(currentRow);
+      incrementCurrentRow();
+    }
+  } else {
+    resetGuesses();
+    resetCurrentRow();
+    eventEmitter.emitEvent("wrongClick");
   }
-  else{
-    resetGuesses()
-    resetCurrentRow()
-  }
-}
+};
 
 const updateGuesses = (row: RowName) => (guesses[row] = true);
 
@@ -131,14 +140,19 @@ const incrementCurrentRow = () => {
 };
 
 const resetGuesses = () => {
-    guesses.firstRow = false
-    guesses.secondRow = false
-    guesses.thirdRow = false
-    guesses.fifthRow = false
-    guesses.fifthRow = false
+  guesses.firstRow = false;
+  guesses.secondRow = false;
+  guesses.thirdRow = false;
+  guesses.fifthRow = false;
+  guesses.fifthRow = false;
 };
 
-const resetCurrentRow = () => currentRow = "firstRow"
+const resetCurrentRow = () => (currentRow = "firstRow");
+
+const resetGame = () => {
+  resetGuesses();
+  resetCurrentRow();
+};
 
 export {
   makeCard,
@@ -152,5 +166,6 @@ export {
   resetCurrentRow,
   resetGuesses,
   isCatCard,
-  pickCard
+  pickCard,
+  resetGame,
 };

@@ -1,4 +1,3 @@
-
 const context = require.context("./assets", false, /.png$/);
 
 const pictureStore: Record<string, string> = context.keys().reduce(

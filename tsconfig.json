@@ -5,6 +5,10 @@
     "module": "es6",
     "target": "es5",
     "allowJs": true,
+    "typeRoots": ["src/@types", "node_modules/@types"],
+    "moduleResolution": "Node",
+    "declaration": true
   },
+  "include": ["src/**/*"],
   "files": ["src/index.ts"]
 }

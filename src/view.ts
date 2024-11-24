@@ -4,7 +4,8 @@ import getPicture from "./pictureManager";
 export interface CardView {
   flip: () => void;
   reset: () => void;
-  getCardData: () => { frontSide: string; backSide: string; cardRow: RowName };
+  getCardData: () => { frontSide: string; backSide: string; cardRow: RowName, cardIndex:number };
+  getCardDiv:()=>HTMLDivElement
 }
 
 const createCardView: CardViewFactory = (
@@ -12,10 +13,13 @@ const createCardView: CardViewFactory = (
   cardDiv: HTMLDivElement,
   getPicture: (name: string) => string,
   row: RowName,
+  index:number
 ): CardView => {
   const backSide: string = card.backSide;
-  const frontSide: string = card.backSide;
+  const frontSide: string = card.frontSide;
   const cardRow: RowName = row;
+  const div = cardDiv;
+  const cardIndex = index
 
   const backSideDiv = cardDiv.querySelector(".back") as HTMLImageElement;
   backSideDiv.src = getPicture(card.backSide);
@@ -31,9 +35,10 @@ const createCardView: CardViewFactory = (
   const reset = () => {
     inner.classList.remove("flip");
   };
-  const getCardData = () => ({ backSide, frontSide, cardRow });
+  const getCardData = () => ({cardIndex, backSide, frontSide, cardRow  });
+  const getCardDiv = ()=>div
 
-  return { reset, flip, getCardData };
+  return { reset, flip, getCardData, getCardDiv };
 };
 
 interface CardViewFactory {
@@ -41,7 +46,8 @@ interface CardViewFactory {
     card: PictureCard,
     cardElement: HTMLDivElement,
     getPicture: (name: string) => string,
-    row:RowName
+    row:RowName,
+    index:number
   ): CardView;
 }
 
@@ -66,23 +72,23 @@ const createPyramidView = (pyramid: Pyramid) => {
 
   const createCardViewList = (): CardView[] => {
     const firstRowView = pyramidDiv.firstRow.map((cardDiv, index) =>
-      createCardView(pyramid.firstRow[index], cardDiv, getPicture, "firstRow"),
+      createCardView(pyramid.firstRow[index], cardDiv, getPicture, "firstRow", index),
     );
 
     const secondRowView = pyramidDiv.secondRow.map((cardDiv, index) =>
-      createCardView(pyramid.secondRow[index], cardDiv, getPicture, "secondRow"),
+      createCardView(pyramid.secondRow[index], cardDiv, getPicture, "secondRow", index),
     );
 
     const thirdRowView = pyramidDiv.thirdRow.map((cardDiv, index) =>
-      createCardView(pyramid.thirdRow[index], cardDiv, getPicture, "thirdRow"),
+      createCardView(pyramid.thirdRow[index], cardDiv, getPicture, "thirdRow", index),
     );
 
     const fourthRowView = pyramidDiv.fourthRow.map((cardDiv, index) =>
-      createCardView(pyramid.fourthRow[index], cardDiv, getPicture, "fourthRow"),
+      createCardView(pyramid.fourthRow[index], cardDiv, getPicture, "fourthRow", index),
     );
 
     const fifthRowView = pyramidDiv.fifthRow.map((cardDiv, index) =>
-      createCardView(pyramid.fifthRow[index], cardDiv, getPicture, "fifthRow"),
+      createCardView(pyramid.fifthRow[index], cardDiv, getPicture, "fifthRow", index),
     );
 
     return [
