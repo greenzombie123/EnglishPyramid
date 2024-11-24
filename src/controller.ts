@@ -44,6 +44,11 @@ const controller = () => {
     cardViews.map((cardView) => {
       cardView.reset();
     });
+
+    setTimeout(()=>{
+      const pyramidData:model.Pyramid = model.getPyramid()
+      pyramidView.resetPyramidView(pyramidData)
+    }, 500)
   };
 
   const init = () => {
