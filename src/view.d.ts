@@ -13,9 +13,13 @@ export interface CardView {
 declare const createPyramidView: (pyramid: Pyramid) => {
     reset: () => void;
     getCardViewList: () => CardView[];
-    getCardView: (frontSide: string, backSide: string, row: RowName) => CardView;
+    getCardView: (frontSide: string, backSide: string, row: RowName) => CardView | undefined;
     getPyramidDiv: () => {
-        [index: string]: HTMLDivElement[];
+        firstRow: HTMLDivElement[];
+        secondRow: HTMLDivElement[];
+        thirdRow: HTMLDivElement[];
+        fourthRow: HTMLDivElement[];
+        fifthRow: HTMLDivElement[];
     };
     resetPyramidView: (newPyramid: Pyramid) => void;
 };

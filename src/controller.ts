@@ -1,5 +1,6 @@
 import { createPyramidView } from "./view";
 import * as model from "./model";
+import type { RowName } from "./model";
 import { eventEmitter, eventListenerManager } from "eventlistenerhelper";
 import createResetButton from "./resetButtonView";
 
@@ -9,7 +10,7 @@ const controller = () => {
   const resetButton = createResetButton();
   const blockedFunctions: Set<string> = new Set<string>();
 
-  const handleCardClick = (row: model.RowName, index: number) => () => {
+  const handleCardClick = (row: RowName, index: number) => () => {
     if (blockedFunctions.has("cardClick")) return;
     const currentRow = model.getCurrentRow();
     if (currentRow === row) model.pickCard(index);
@@ -30,32 +31,33 @@ const controller = () => {
     const { frontSide, backSide } = card;
     const row = model.getCurrentRow();
     const cardView = pyramidView.getCardView(frontSide, backSide, row);
-    cardView.flip();
+    if (cardView) cardView.flip();
+    else throw Error(`Can't find the card`);
   };
 
-  const handleGameOver = ()=>{
-    resetButton.revealButton()
-  }
+  const handleGameOver = () => {
+    resetButton.revealButton();
+  };
 
   const handleResetGame = () => {
-    resetButton.hideButton()
-    model.resetGame()
+    resetButton.hideButton();
+    model.resetGame();
     const cardViews = pyramidView.getCardViewList();
     cardViews.map((cardView) => {
       cardView.reset();
     });
 
-    setTimeout(()=>{
-      const pyramidData:model.Pyramid = model.getPyramid()
-      pyramidView.resetPyramidView(pyramidData)
-    }, 500)
+    setTimeout(() => {
+      const pyramidData: model.Pyramid = model.getPyramid();
+      pyramidView.resetPyramidView(pyramidData);
+    }, 500);
   };
 
   const init = () => {
     eventEmitter.subscribe("wrongClick", handleWrongClick);
     eventEmitter.subscribe("flipCard", handleFlipCard);
     eventEmitter.subscribe("gameOver", handleGameOver);
-    eventEmitter.subscribe("resetGame", handleResetGame)
+    eventEmitter.subscribe("resetGame", handleResetGame);
 
     // Get list of cardViews
     const cardViewList = pyramidView.getCardViewList();
@@ -65,14 +67,17 @@ const controller = () => {
       const cardDiv = cardView.getCardDiv();
       const { cardRow, cardIndex } = cardView.getCardData();
 
-      eventListenerManager.setListener(handleCardClick(cardRow, cardIndex), cardDiv, "click")
+      eventListenerManager.setListener(
+        handleCardClick(cardRow, cardIndex),
+        cardDiv,
+        "click",
+      );
 
       // cardDiv.addEventListener("click", handleCardClick(cardRow, cardIndex));
     });
 
     // Attach handleResetGame to reset button
-    resetButton.getButton().addEventListener("click", handleResetGame)
-
+    resetButton.getButton().addEventListener("click", handleResetGame);
   };
 
   return { init };

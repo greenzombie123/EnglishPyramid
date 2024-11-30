@@ -93,13 +93,20 @@ const createCardRow = <T extends number>(numOfCards: T): CardRow<T> => {
         const animalRanNum = Math.floor(Math.random() * animals.length);
         const placeRanNum = Math.floor(Math.random() * places.length);
 
-        const card: PictureCard = {
-          backSide: animals[animalRanNum],
-          frontSide: places[placeRanNum],
-          type: "Picture",
-        };
+        if(animals[animalRanNum] && places[placeRanNum]){
+          cards.push({
+            backSide: animals[animalRanNum],
+            frontSide: places[placeRanNum],
+            type: "Picture",
+          })
+        }
+        // const card: PictureCard = {
+        //   backSide: animals[animalRanNum],
+        //   frontSide: places[placeRanNum],
+        //   type: "Picture",
+        // };
 
-        cards.push(card);
+        // cards.push(card);
 
         animals = animals.filter((animal) => animal !== animals[animalRanNum]);
         places = places.filter((place) => place !== places[placeRanNum]);

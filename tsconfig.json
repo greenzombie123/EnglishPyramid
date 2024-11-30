@@ -2,12 +2,19 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "module": "es6",
+    "module": "NodeNext",
     "target": "es5",
+    "sourceMap":true,
     "allowJs": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
     "typeRoots": ["src/@types", "node_modules/@types"],
-    "moduleResolution": "Node",
-    "declaration": true
+    "moduleResolution": "nodenext",
+    "declaration": true,
+    "baseUrl": ".",
+    "paths": {
+      "eventlistenerhelper":["/home/greenzombie/.nvm/versions/node/v20.13.1/lib/node_modules/eventlistenerhelper"]
+    }
   },
   "include": ["src/**/*"],
   "files": ["src/index.ts"]

@@ -1,14 +1,40 @@
+import { Animal, Place } from "./model";
+
 const context = require.context("./assets", false, /.png$/);
 
-const pictureStore: Record<string, string> = context.keys().reduce(
-  (store: Record<string, string>, key: string) => {
-    const name = key.replace(".png", "").replace("./", "")
-    store[name] = context(key);
-    return store
-  },
-  {} as Record<string, string>,
-);
+type PictureStore = {
+  [Key in Animal | Place]: string;
+};
 
-const getPicture = (name:string)=> pictureStore[name] 
+const validNames:(Animal | Place)[] = [
+  "dog",
+  "elephant",
+  "cat",
+  "tiger",
+  "alligator",
+  "library",
+  "park",
+  "school",
+  "zoo",
+  "supermarket",
+]
 
-export default getPicture
+// Helper function to assert a value is a valid name
+const isValidName = (name: string): name is Animal | Place => validNames.includes(name as Animal | Place);
+
+
+const pictureStore: PictureStore = context
+  .keys()
+  .reduce((store: PictureStore, key: string) => {
+    const name = key.replace(".png", "").replace("./", "");
+
+    if (isValidName(name)) {
+      store[name] = context<string>(key);
+    }
+
+    return store;
+  }, {} as PictureStore);
+
+const getPicture = (name: keyof PictureStore) => pictureStore[name];
+
+export default getPicture;
